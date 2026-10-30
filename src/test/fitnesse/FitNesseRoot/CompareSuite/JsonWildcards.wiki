@@ -1,0 +1,19 @@
+---
+Test
+---
+!3 JSON: wildcards
+!-A wildcard is the whole expected string value. ${any} accepts any value, ${any-string} any string, ${any-number} any number, ${regex:…} a string, number or boolean whose text matches the whole pattern, ${ignore} any value or a missing key. $${…} is the escape for a literal ${…}; a marker inside a longer string is literal text.-!
+
+|script|json comparison|
+|check|compare;|!-{"a":"${any}","b":"${any}","c":"${any}"}-!|!-{"a":1,"b":{"x":[1]},"c":null}-!|OK|
+|check|compare;|!-{"a":"${any}"}-!|!-{}-!|!-<div><b>1 difference:</b><br>$.a: missing</div>-!|
+|check|compare;|!-{"a":"${any-string}"}-!|!-{"a":"text"}-!|OK|
+|check|compare;|!-{"a":"${any-string}"}-!|!-{"a":1}-!|!-<div><b>1 difference:</b><br>$.a: expected <code>string</code> but was <code>number</code></div>-!|
+|check|compare;|!-{"a":"${any-number}"}-!|!-{"a":-1.5e3}-!|OK|
+|check|compare;|!-{"a":"${any-number}"}-!|!-{"a":"1"}-!|!-<div><b>1 difference:</b><br>$.a: expected <code>number</code> but was <code>string</code></div>-!|
+|check|compare;|!-{"at":"${regex:[0-9]{2}:[0-9]{2}}","n":"${regex:4[0-9]}","b":"${regex:t.ue}"}-!|!-{"at":"14:05","n":42,"b":true}-!|OK|
+|check|compare;|!-{"at":"${regex:[0-9]{2}:[0-9]{2}}"}-!|!-{"at":"14:05:00"}-!|!-<div><b>1 difference:</b><br>$.at: expected to match /<code>[0-9]{2}:[0-9]{2}</code>/ but was <code>&quot;14:05:00&quot;</code></div>-!|
+|check|compare;|!-{"tags":["${ignore}","b"],"coupon":"${ignore}"}-!|!-{"tags":["a","b"]}-!|OK|
+|check|compare;|!-{"price":"$${any}"}-!|!-{"price":"${any}"}-!|OK|
+|check|compare;|!-{"price":"$${any}"}-!|!-{"price":"10"}-!|!-<div><b>1 difference:</b><br>$.price: expected <code>&quot;${any}&quot;</code> but was <code>&quot;10&quot;</code></div>-!|
+|check|compare;|!-{"a":"id-${any}"}-!|!-{"a":"id-${any}"}-!|OK|

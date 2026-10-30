@@ -1,0 +1,25 @@
+---
+Test
+---
+!3 JSON: the three row shapes
+Paths are relative to the working directory (the repository root). Inline content is wrapped in '''!-!-…-!-!''' or in '''!-{{{ }}}-!''' (FitNesse then hands a <pre> block to the fixture, which unwraps it).
+
+|script|json comparison|
+|note|!-file to file: the expected file uses ${any}, ${regex:…} and ${ignore}; the actual file reorders keys and writes 1.0 and 42.50-!|
+|check|compare file|src/test/resources/e2e/expected/order.json|to file|src/test/resources/e2e/actual/order.json|OK|
+|note|!-file to inline content, in {{{ }}} on several lines-!|
+|check|compare file|src/test/resources/e2e/expected/order.json|to|{{{
+{
+  "id": "O-1",
+  "createdAt": "2026-01-02T03:04:05Z",
+  "status": "OPEN",
+  "total": 42.5,
+  "lines": [{"sku": "A", "qty": 2}, {"sku": "B", "qty": 1}]
+}
+}}}|OK|
+|note|file to inline content that does not match|
+|check|compare file|src/test/resources/e2e/expected/order.json|to|!-{"id":"A-1"}-!|!-<div><b>4 differences:</b><br>$.createdAt: missing<br>$.status: missing<br>$.total: missing<br>$.lines: missing</div>-!|
+|note|inline to inline|
+|check|compare;|!-{"a":1,"b":[true,null]}-!|!-{"b":[true,null],"a":1}-!|OK|
+|note|a mismatch asserted with check not|
+|check not|compare;|!-{"id":"A-2"}-!|!-{"id":"A-1"}-!|OK|

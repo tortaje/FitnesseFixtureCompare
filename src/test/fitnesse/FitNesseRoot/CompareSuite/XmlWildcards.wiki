@@ -1,0 +1,18 @@
+---
+Test
+---
+!3 XML: wildcards
+!-A wildcard is a whole attribute value or the whole text of an element. ${any} and ${ignore} accept anything (even child elements), ${any-string} any text, ${any-number} a number, ${regex:…} a text matching the whole pattern. An element whose text is ${ignore} may also be absent; an attribute ${ignore} may be absent. $${…} is the escape for a literal ${…}.-!
+
+|script|xml comparison|
+|check|compare;|!-<a id="${any}"><b>${any}</b></a>-!|{{{<a id="7"><b><c>deep</c></b></a>}}}|OK|
+|check|compare;|!-<a><b>${any-string}</b></a>-!|{{{<a><b>hello</b></a>}}}|OK|
+|check|compare;|!-<a><b>${any-string}</b></a>-!|{{{<a><b><c/></b></a>}}}|!-<div><b>1 difference:</b><br>/a/b: expected <code>text</code> but was <code>element content</code></div>-!|
+|check|compare;|!-<a n="${any-number}"><b>${any-number}</b></a>-!|{{{<a n="-3"><b>1.5e2</b></a>}}}|OK|
+|check|compare;|!-<a><b>${any-number}</b></a>-!|{{{<a><b>abc</b></a>}}}|!-<div><b>1 difference:</b><br>/a/b: expected <code>number</code> but was <code>text</code></div>-!|
+|check|compare;|!-<a d="${regex:[0-9]{4}-[0-9]{2}}"><b>${regex:A.*}</b></a>-!|{{{<a d="2026-10"><b>ABC</b></a>}}}|OK|
+|check|compare;|!-<a d="${regex:[0-9]{4}}"/>-!|{{{<a d="20261"/>}}}|!-<div><b>1 difference:</b><br>/a/@d: expected to match /<code>[0-9]{4}</code>/ but was <code>20261</code></div>-!|
+|check|compare;|!-<a v="${ignore}"><t>${ignore}</t><b>1</b></a>-!|{{{<a><b>1</b></a>}}}|OK|
+|check|compare;|!-<a><t>${ignore}</t><b>1</b></a>-!|{{{<a><t><x/>any</t><b>1</b></a>}}}|OK|
+|check|compare;|!-<a p="$${any}">$${any}</a>-!|!-<a p="${any}">${any}</a>-!|OK|
+|check|compare;|!-<a>$${any}</a>-!|{{{<a>x</a>}}}|!-<div><b>1 difference:</b><br>/a/text(): expected <code>${any}</code> but was <code>x</code></div>-!|

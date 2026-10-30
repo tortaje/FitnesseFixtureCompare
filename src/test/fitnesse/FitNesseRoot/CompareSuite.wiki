@@ -1,0 +1,15 @@
+---
+Suite
+---
+!define TEST_SYSTEM {slim}
+
+!1 fitnesse-compare: every usage scenario
+
+Each page states what it demonstrates; every row must be green. A mismatch is asserted with the exact HTML the
+fixture returns, so the expected differences are rendered in the cell (a '''=~/regex/''' check would show the HTML
+source: FitNesse escapes its message). Rows starting with '''show''' display the rendering in an extra cell, without
+asserting anything.
+
+Error cases (yellow cells, expected) live in [[CompareErrorSuite][.CompareErrorSuite]].
+
+!contents -R2 -g -p -f -h

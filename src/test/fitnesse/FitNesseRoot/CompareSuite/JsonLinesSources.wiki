@@ -1,0 +1,23 @@
+---
+Test
+---
+!3 JSON Lines: the three row shapes
+One JSON document per line. The expected file uses !-${any}-! and !-${regex:…}-!; the actual file has the same orders in another order, a blank line and CRLF line ends, so the file-to-file row pairs the lines with '''key'''.
+
+|script|json lines comparison|
+|note|file to file, lines paired by the ref field|
+|key|ref|
+|check|compare file|src/test/resources/e2e/expected/orders.jsonl|to file|src/test/resources/e2e/actual/orders.jsonl|OK|
+|ordered|
+|note|file to inline content, in {{{ }}} on several lines, in the expected order|
+|check|compare file|src/test/resources/e2e/expected/orders.jsonl|to|{{{
+{"id":"x","ref":"A-1","createdAt":"2026-01-01T00:00:00Z","total":10}
+{"id":"y","ref":"A-2","createdAt":"2026-01-01T00:00:00Z","total":20.5}
+{"id":"z","ref":"A-3","createdAt":"2026-01-01T00:00:00Z","total":7}
+}}}|OK|
+|note|inline to inline (an expected cell holding a wildcard is written !-!-…-!-!)|
+|check|compare;|!-{"id":"${any}","v":1}
+{"id":"${any}","v":2}-!|{{{ {"id":7,"v":1}
+{"id":8,"v":2} }}}|OK|
+|note|a mismatch asserted with check not|
+|check not|compare;|!-{"v":1}-!|!-{"v":2}-!|OK|

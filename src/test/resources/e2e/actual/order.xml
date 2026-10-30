@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<o:order xmlns:o="urn:example:order" created="2026-10-30" id="O-77"><o:status>OPEN</o:status><o:total>42.50</o:total><o:lines><o:line qty="2" sku="A"/><o:line qty="1" sku="B"/></o:lines></o:order>

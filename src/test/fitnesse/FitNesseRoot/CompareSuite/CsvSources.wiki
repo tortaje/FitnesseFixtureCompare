@@ -1,0 +1,30 @@
+---
+Test
+---
+!3 CSV: the three row shapes
+The first line is the header. Columns are compared by name, so their order does not matter. The separator is set with '''separator''' (here a semicolon; '''tab''' stands for a tab; a .tsv file defaults to tab). The e2e files have their rows in another order, so the file-to-file row uses '''key'''.
+
+|script|csv comparison|
+|separator|;|
+|key|id|
+|check|compare file|src/test/resources/e2e/expected/export.csv|to file|src/test/resources/e2e/actual/export.csv|OK|
+|ordered|
+|note|file to inline content, in {{{ }}}: one label holds the separator and a line break inside quotes|
+|check|compare file|src/test/resources/e2e/expected/export.csv|to|{{{
+label;amount;id
+Widget;10.00;1
+"Gadget; large
+blue";99;2
+Gizmo;5.5;3
+}}}|OK|
+|note|inline to inline|
+|check|compare;|{{{id;v
+1;a}}}|{{{v;id
+a;1}}}|OK|
+|check not|compare;|{{{id;v
+1;a}}}|{{{id;v
+1;b}}}|OK|
+|separator|tab|
+|check|compare;|{{{id	v
+1	a}}}|{{{v	id
+a	1}}}|OK|

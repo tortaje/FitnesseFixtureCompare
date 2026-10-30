@@ -1,0 +1,35 @@
+---
+Test
+---
+!define TEST_SYSTEM {slim}
+!3 A failing comparison: what the cell shows
+This page fails on purpose (it is not part of any suite): it shows how differences are rendered when a '''check … OK''' row fails. The README screenshot docs/images/ui-failure.png is taken from it.
+
+|import|
+|io.github.tortaje.compare|
+
+|script|json comparison|
+|check|compare file|src/test/resources/e2e/expected/order.json|to|{{{
+{
+  "id": "O-1",
+  "createdAt": "yesterday",
+  "status": "CLOSED",
+  "total": 42.5,
+  "lines": [
+    {"sku": "A", "qty": 2},
+    {"sku": "B", "qty": 3}
+  ],
+  "note": "x"
+}
+}}}|OK|
+
+|script|xml comparison|
+|check|compare file|src/test/resources/e2e/expected/order.xml|to|{{{
+<order id="O-9" created="2026-12-31">
+  <status>CLOSED</status>
+  <total>42.5</total>
+  <lines>
+    <line sku="A" qty="2"/>
+  </lines>
+</order>
+}}}|OK|

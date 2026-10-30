@@ -1,0 +1,5 @@
+${any} INFO Application started
+${any} INFO Order ${any} created
+${any} WARN Slow query: ${any-number} ms
+${ignore}
+${any} INFO Application stopped

@@ -1,0 +1,42 @@
+---
+Test
+---
+!3 CSV: ordered, unordered and key
+By default row N is compared with row N. '''unordered''' pairs each expected row with the first free actual row it matches; '''key''' pairs rows by one or more columns (names separated by commas) and implies unordered. A key cell cannot be a wildcard. '''ordered''' clears the order settings but keeps the separator.
+
+|script|csv comparison|
+|separator|;|
+|check not|compare;|{{{id;v
+1;a
+2;b}}}|{{{id;v
+2;b
+1;a}}}|OK|
+|unordered|
+|check|compare;|{{{id;v
+1;a
+2;b}}}|{{{id;v
+2;b
+1;a}}}|OK|
+|key|id|
+|check|compare;|{{{id;v
+1;a
+2;b}}}|{{{id;v
+2;b
+1;a}}}|OK|
+|check|compare;|{{{id;v
+1;a
+2;b}}}|{{{id;v
+2;x
+1;a}}}|!-<div><b>1 difference:</b><br>row[1].v: expected <code>b</code> but was <code>x</code></div>-!|
+|key|order, line|
+|check|compare;|{{{order;line;qty
+A;1;2
+A;2;5}}}|{{{order;line;qty
+A;2;5
+A;1;2}}}|OK|
+|ordered|
+|check not|compare;|{{{id;v
+1;a
+2;b}}}|{{{id;v
+2;b
+1;a}}}|OK|

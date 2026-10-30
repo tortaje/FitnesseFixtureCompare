@@ -1,0 +1,11 @@
+{
+  "id": "${any}",
+  "createdAt": "${regex:\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}Z}",
+  "status": "OPEN",
+  "coupon": "${ignore}",
+  "total": 42.5,
+  "lines": [
+    {"sku": "A", "qty": 2},
+    {"sku": "B", "qty": 1}
+  ]
+}

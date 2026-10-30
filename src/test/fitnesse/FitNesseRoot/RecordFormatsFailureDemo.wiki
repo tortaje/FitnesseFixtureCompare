@@ -1,0 +1,33 @@
+---
+Test
+---
+!define TEST_SYSTEM {slim}
+!3 Failing comparisons for JSON Lines, text and CSV: what the cells show
+This page fails on purpose (it is not part of any suite): it shows how differences are rendered when a '''check … OK''' row fails.
+
+|import|
+|io.github.tortaje.compare|
+
+|script|json lines comparison|
+|key|ref|
+|check|compare file|src/test/resources/e2e/expected/orders.jsonl|to|{{{
+{"id":"o-1","ref":"A-1","createdAt":"2026-10-30T14:05:00Z","total":10}
+{"id":"o-2","ref":"A-2","createdAt":"yesterday","total":25}
+{"id":"o-4","ref":"A-4","createdAt":"2026-10-30T14:08:00Z","total":1}
+}}}|OK|
+
+|script|text comparison|
+|check|compare file|src/test/resources/e2e/expected/app.log|to|{{{08:00 INFO Application started
+08:01 ERROR Order A-7 rejected
+08:02 WARN Slow query: fast ms
+}}}|OK|
+
+|script|csv comparison|
+|separator|;|
+|key|id|
+|check|compare file|src/test/resources/e2e/expected/export.csv|to|{{{
+id;label;amount
+1;Widget;12
+3;Gizmo;5.5
+4;Doohickey;1
+}}}|OK|

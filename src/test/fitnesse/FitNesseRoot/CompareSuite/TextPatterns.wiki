@@ -1,0 +1,31 @@
+---
+Test
+---
+!3 Text: line patterns
+Wildcards work inside a line: !-${any}-! any characters (even none), !-${any-string}-! at least one, !-${any-number}-! a decimal number, !-${regex:P}-! a fragment matching P. Everything else is literal, regex characters included; !-$${…}-! is a literal !-${…}-!. A line holding only !-${ignore}-! is optional. Trailing spaces and CRLF do not count; blank lines at the end are ignored, other blank lines count.
+
+|script|text comparison|
+|check|compare;|!-${any} INFO Order ${any} created-!|!-2026-10-31 14:05 INFO Order A-77 created-!|OK|
+|check|compare;|!-x${any}y-!|!-xy-!|OK|
+|check not|compare;|!-x${any-string}y-!|!-xy-!|OK|
+|check|compare;|!-total=${any-number} EUR-!|!-total=-12.50 EUR-!|OK|
+|check not|compare;|!-total=${any-number} EUR-!|!-total=abc EUR-!|OK|
+|check|compare;|!-at ${regex:[0-9]{2}:[0-9]{2}} ok-!|!-at 14:05 ok-!|OK|
+|check|compare;|!-price: $5 (approx.) {x} [y]*-!|!-price: $5 (approx.) {x} [y]*-!|OK|
+|check|compare;|!-home=$${HOME}-!|!-home=${HOME}-!|OK|
+|check|compare;|!-start
+${ignore}
+end-!|{{{start
+end}}}|OK|
+|check|compare;|!-start
+${ignore}
+end-!|{{{start
+noise
+end}}}|OK|
+|check|compare;|{{{a
+
+b}}}|{{{a
+
+b
+
+}}}|OK|

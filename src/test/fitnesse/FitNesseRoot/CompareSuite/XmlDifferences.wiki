@@ -1,0 +1,31 @@
+---
+Test
+---
+!3 XML: how differences are reported
+!-Paths look like /a/line[2]/@qty for an attribute, /a/b for an element, /a/b/text() for its text and /a/text()[2] for a text node in mixed content. The kinds are the same as in JSON; the rendering limits (10 differences, 80 characters) too.-!
+
+|script|xml comparison|
+|check|compare;|{{{<a><b>11</b></a>}}}|{{{<a><b>10</b></a>}}}|!-<div><b>1 difference:</b><br>/a/b/text(): expected <code>11</code> but was <code>10</code></div>-!|
+|check|compare;|{{{<o><line qty="2"/><line qty="1"/></o>}}}|{{{<o><line qty="2"/><line qty="5"/></o>}}}|!-<div><b>1 difference:</b><br>/o/line[2]/@qty: expected <code>1</code> but was <code>5</code></div>-!|
+|check|compare;|{{{<a p="1"><b/></a>}}}|{{{<a q="1"><b/><c/></a>}}}|!-<div><b>3 differences:</b><br>/a/@p: missing<br>/a/@q: unexpected <code>1</code><br>/a/c: unexpected <code>element &lt;c&gt;</code></div>-!|
+|check|compare;|{{{<p>Hello <b>you</b> there</p>}}}|{{{<p>Hello <b>you</b> here</p>}}}|!-<div><b>1 difference:</b><br>/p/text()[2]: expected <code>there</code> but was <code>here</code></div>-!|
+|check|compare;|{{{<a/>}}}|{{{<b/>}}}|!-<div><b>1 difference:</b><br>/: expected <code>element &lt;a&gt;</code> but was <code>element &lt;b&gt;</code></div>-!|
+|note|the rows below show the HTML rendering in the extra cell|
+|show|compare;|{{{<order id="1">
+  <status>OPEN</status>
+  <line sku="A" qty="2"/>
+</order>}}}|{{{<order id="2">
+  <status>CLOSED</status>
+  <line sku="A" qty="3"/>
+  <extra/>
+</order>}}}|
+|show|compare;|{{{<a>
+  <b>1</b><b>2</b><b>3</b><b>4</b>
+  <b>5</b><b>6</b><b>7</b><b>8</b>
+  <b>9</b><b>10</b><b>11</b><b>12</b>
+</a>}}}|{{{<a>
+  <b>0</b><b>0</b><b>0</b><b>0</b>
+  <b>0</b><b>0</b><b>0</b><b>0</b>
+  <b>0</b><b>0</b><b>0</b><b>0</b>
+</a>}}}|
+|show|compare;|{{{<a><b>p &amp; q &lt;r&gt;</b></a>}}}|{{{<a><b>"quoted"</b></a>}}}|

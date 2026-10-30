@@ -1,0 +1,27 @@
+---
+Test
+---
+!3 XML: the three row shapes
+Same rows as JSON, with the '''xml comparison''' fixture. Inline XML must be wrapped in '''!-!-…-!-!''' or '''!-{{{ }}}-!''' so that FitNesse does not interpret the tags.
+
+|script|xml comparison|
+|note|!-file to file: the expected file uses ${any}, ${regex:…} and ${ignore}-!|
+|check|compare file|src/test/resources/e2e/expected/order.xml|to file|src/test/resources/e2e/actual/order.xml|OK|
+|note|!-file to inline content, in {{{ }}} on several lines-!|
+|check|compare file|src/test/resources/e2e/expected/order.xml|to|{{{
+<order id="O-9" created="2026-12-31">
+  <status>OPEN</status>
+  <token>t-1</token>
+  <total>42.50</total>
+  <lines>
+    <line sku="A" qty="2"/>
+    <line sku="B" qty="1"/>
+  </lines>
+</order>
+}}}|OK|
+|note|file to inline content that does not match|
+|check|compare file|src/test/resources/e2e/expected/order.xml|to|{{{<order id="1"/>}}}|!-<div><b>4 differences:</b><br>/order/@created: missing<br>/order/status: missing<br>/order/total: missing<br>/order/lines: missing</div>-!|
+|note|inline to inline|
+|check|compare;|{{{<a><b>1</b></a>}}}|{{{<?xml version="1.0"?><a><b>1</b></a>}}}|OK|
+|note|a mismatch asserted with check not|
+|check not|compare;|{{{<a>2</a>}}}|{{{<a>1</a>}}}|OK|

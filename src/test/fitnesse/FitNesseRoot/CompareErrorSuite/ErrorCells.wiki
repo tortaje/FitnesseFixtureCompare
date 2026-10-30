@@ -1,0 +1,49 @@
+---
+Test
+---
+!3 Error cases: every row below is expected to raise
+A missing file or a document that cannot be read is not a difference: the fixture raises, and FitNesse shows the cell in yellow with the message. All rows here are '''expected''' to be yellow.
+
+|import|
+|io.github.tortaje.compare|
+
+|script|json comparison|
+|check|compare file|src/test/resources/e2e/expected/missing.json|to file|src/test/resources/e2e/actual/order.json|OK|
+|check|compare file|src/test/resources/e2e/expected/order.json|to file|src/test/resources/e2e/actual/missing.json|OK|
+|check|compare;|!-{"a":1}-!|!-{"a":-!|OK|
+|check|compare;|!-{"a":1,"a":2}-!|!-{"a":1}-!|OK|
+|check|compare;|!-{"a":1}-!|!- -!|OK|
+|check|compare;|!-{"a":"${nope}"}-!|!-{"a":"x"}-!|OK|
+|check|compare;|!-{"a":"${regex:[0-9}"}-!|!-{"a":"1"}-!|OK|
+
+|script|xml comparison|
+|check|compare;|{{{<a><b></a>}}}|{{{<a/>}}}|OK|
+|check|compare;|{{{<a/>}}}|{{{<!DOCTYPE a [<!ENTITY x "y">]><a>&x;</a>}}}|OK|
+|check|compare;|!-<a>${nope}</a>-!|{{{<a>x</a>}}}|OK|
+
+|script|json lines comparison|
+|check|compare;|{{{ {"a":1} }}}|{{{ {"a":1}
+{"a":x} }}}|OK|
+|key|id|
+|check|compare;|!-{"id":"${any}"}-!|!-{"id":1}-!|OK|
+
+|script|csv comparison|
+|separator|;|
+|check|compare;|{{{id;v
+1;a}}}|{{{id;v
+1;a;b}}}|OK|
+|check|compare;|{{{id;v
+1;"a}}}|{{{id;v
+1;a}}}|OK|
+|check|compare;|{{{id;v
+1;a}}}|{{{id;id
+1;a}}}|OK|
+|key|idd|
+|check|compare;|{{{id;v
+1;a}}}|{{{id;v
+1;a}}}|OK|
+|separator|;;|
+
+|script|text comparison|
+|key|k|
+|check|compare;|!-a-!|!-a-!|OK|

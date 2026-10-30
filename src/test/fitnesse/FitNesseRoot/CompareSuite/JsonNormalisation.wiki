@@ -1,0 +1,13 @@
+---
+Test
+---
+!3 JSON: what is equal and what is not
+Key order and whitespace do not matter; numbers compare by value (10 = 10.0 = 1e1); array order matters; a string "10" is not the number 10.
+
+|script|json comparison|
+|check|compare;|!-{"a":1,"b":2}-!|!-{ "b" : 2 ,   "a" : 1 }-!|OK|
+|check|compare;|!-{"n":10,"m":0.5,"k":1e1}-!|!-{"n":10.0,"m":5E-1,"k":10}-!|OK|
+|check|compare;|!-{"s":"é ☃"}-!|!-{"s":"é ☃"}-!|OK|
+|check|compare;|!-[1,2]-!|!-[2,1]-!|!-<div><b>2 differences:</b><br>$[0]: expected <code>1</code> but was <code>2</code><br>$[1]: expected <code>2</code> but was <code>1</code></div>-!|
+|check|compare;|!-{"n":10}-!|!-{"n":"10"}-!|!-<div><b>1 difference:</b><br>$.n: expected <code>number</code> but was <code>string</code></div>-!|
+|check|compare;|!-{"a":null}-!|!-{"a":false}-!|!-<div><b>1 difference:</b><br>$.a: expected <code>null</code> but was <code>boolean</code></div>-!|

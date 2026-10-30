@@ -1,0 +1,31 @@
+---
+Test
+---
+!3 JSON Lines: ordered, unordered and key
+By default line N is compared with line N. '''unordered''' pairs each expected line with the first free actual line it matches; '''key''' pairs lines by a field (a dotted path such as order.id; several names separated by commas) and implies unordered. Settings hold until the end of the table; '''ordered''' clears them.
+
+|script|json lines comparison|
+|check not|compare;|{{{ {"id":1}
+{"id":2} }}}|{{{ {"id":2}
+{"id":1} }}}|OK|
+|unordered|
+|check|compare;|{{{ {"id":1}
+{"id":2} }}}|{{{ {"id":2}
+{"id":1} }}}|OK|
+|key|order.id|
+|check|compare;|{{{ {"order":{"id":1},"v":"a"}
+{"order":{"id":2},"v":"b"} }}}|{{{ {"order":{"id":2},"v":"b"}
+{"order":{"id":1},"v":"a"} }}}|OK|
+|note|with a key, the differences of a paired line use the actual line number|
+|check|compare;|{{{ {"order":{"id":1},"v":"a"}
+{"order":{"id":2},"v":"b"} }}}|{{{ {"order":{"id":2},"v":"x"}
+{"order":{"id":1},"v":"a"} }}}|!-<div><b>1 difference:</b><br>line[1]$.v: expected <code>&quot;b&quot;</code> but was <code>&quot;x&quot;</code></div>-!|
+|note|duplicate keys pair in order of appearance|
+|key|id|
+|check|compare;|{{{ {"id":1,"n":1}
+{"id":1,"n":2} }}}|{{{ {"id":1,"n":1}
+{"id":1,"n":2} }}}|OK|
+|ordered|
+|check not|compare;|{{{ {"id":1}
+{"id":2} }}}|{{{ {"id":2}
+{"id":1} }}}|OK|

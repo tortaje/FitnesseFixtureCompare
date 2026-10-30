@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<order id="${any}" created="${regex:\d{4}-\d{2}-\d{2}}">
+  <status>OPEN</status>
+  <token>${ignore}</token>
+  <total>42.50</total>
+  <lines>
+    <line sku="A" qty="2"/>
+    <line sku="B" qty="1"/>
+  </lines>
+</order>

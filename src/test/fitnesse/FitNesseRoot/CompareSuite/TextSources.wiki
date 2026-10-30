@@ -1,0 +1,17 @@
+---
+Test
+---
+!3 Text: the three row shapes
+One line is one record. The expected file is a list of line patterns using !-${any}-!, !-${any-number}-! and !-${ignore}-!; the actual file has one more line, which the !-${ignore}-! line absorbs.
+
+|script|text comparison|
+|check|compare file|src/test/resources/e2e/expected/app.log|to file|src/test/resources/e2e/actual/app.log|OK|
+|note|file to inline content, in {{{ }}} on several lines: the first line starts right after {{{, since a blank line counts in text|
+|check|compare file|src/test/resources/e2e/expected/app.log|to|{{{08:00 INFO Application started
+08:01 INFO Order A-7 created
+08:02 WARN Slow query: 12 ms
+08:03 INFO Application stopped
+}}}|OK|
+|note|inline to inline|
+|check|compare;|!-${any} started-!|!-app started-!|OK|
+|check not|compare;|!-a-!|!-b-!|OK|

@@ -1,0 +1,18 @@
+---
+Test
+---
+!3 JSON Lines: what is equal and what is not
+Each line follows the JSON rules: key order and spacing do not matter, numbers compare by value, every JSON wildcard works. Blank lines are ignored wherever they are; an empty actual content is zero lines, not an error.
+
+|script|json lines comparison|
+|check|compare;|!-{"a":1,"b":2.0}-!|!-{ "b" : 2 , "a" : 1 }-!|OK|
+|check|compare;|!-{"n":"${any-number}","s":"${any-string}","at":"${regex:[0-9]{2}:[0-9]{2}}"}-!|!-{"n":-1.5e3,"s":"x","at":"14:05"}-!|OK|
+|check|compare;|!-{"id":1,"coupon":"${ignore}"}-!|!-{"id":1}-!|OK|
+|check|compare;|{{{ {"a":1}
+
+{"a":2} }}}|{{{ {"a":1}
+{"a":2}
+
+}}}|OK|
+|check|compare;|!-{"a":1}-!||!-<div><b>1 difference:</b><br>expected line[1]: missing <code>{&quot;a&quot;:1}</code></div>-!|
+|check|compare;|!-[1,2]-!|!-[2,1]-!|!-<div><b>2 differences:</b><br>line[1]$[0]: expected <code>1</code> but was <code>2</code><br>line[1]$[1]: expected <code>2</code> but was <code>1</code></div>-!|

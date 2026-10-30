@@ -1,0 +1,21 @@
+---
+Test
+---
+!3 JSON Lines: how differences are reported
+A path is line[N] (the physical line of the actual content) followed by the JSON path inside the line. A missing line names the expected line and shows it; an extra line is unexpected.
+
+|script|json lines comparison|
+|check|compare;|!-{"id":1,"v":"a"}-!|!-{"id":1,"v":"b"}-!|!-<div><b>1 difference:</b><br>line[1]$.v: expected <code>&quot;a&quot;</code> but was <code>&quot;b&quot;</code></div>-!|
+|check|compare;|{{{ {"a":1}
+{"a":2} }}}|{{{ {"a":1}
+
+{"a":3} }}}|!-<div><b>1 difference:</b><br>line[3]$.a: expected <code>2</code> but was <code>3</code></div>-!|
+|check|compare;|{{{ {"a":1}
+{"a":2} }}}|{{{ {"a":1} }}}|!-<div><b>1 difference:</b><br>expected line[2]: missing <code>{&quot;a&quot;:2}</code></div>-!|
+|check|compare;|{{{ {"a":1} }}}|{{{ {"a":1}
+{"a":9} }}}|!-<div><b>1 difference:</b><br>line[2]: unexpected <code>{&quot;a&quot;:9}</code></div>-!|
+|note|the row below shows the HTML rendering in the extra cell|
+|show|compare;|{{{ {"id":1,"status":"OPEN","total":10}
+{"id":2,"status":"OPEN","total":20} }}}|{{{ {"id":1,"status":"CLOSED","total":10}
+{"id":2,"status":"OPEN","total":21,"extra":true}
+{"id":3} }}}|

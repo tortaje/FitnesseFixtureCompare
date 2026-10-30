@@ -1,0 +1,17 @@
+---
+Test
+---
+!3 JSON: how differences are reported
+!-Each difference gives its path ($.key, $.list[i], $['odd key']) and its kind: a different value or type, a missing key or item, an unexpected key or item. At most 10 are listed, then "… and N more"; values longer than 80 characters are cut with "…".-!
+
+|script|json comparison|
+|check|compare;|!-{"total":11}-!|!-{"total":10}-!|!-<div><b>1 difference:</b><br>$.total: expected <code>11</code> but was <code>10</code></div>-!|
+|check|compare;|!-{"a":1,"b":2}-!|!-{"a":1,"c":3}-!|!-<div><b>2 differences:</b><br>$.b: missing<br>$.c: unexpected <code>3</code></div>-!|
+|check|compare;|!-{"lines":[{"qty":2},{"qty":1}]}-!|!-{"lines":[{"qty":2},{"qty":5},{"qty":7}]}-!|!-<div><b>2 differences:</b><br>$.lines[1].qty: expected <code>1</code> but was <code>5</code><br>$.lines[2]: unexpected <code>{&quot;qty&quot;:7}</code></div>-!|
+|check|compare;|!-{"odd key":1}-!|!-{"odd key":2}-!|!-<div><b>1 difference:</b><br>$[&#39;odd key&#39;]: expected <code>1</code> but was <code>2</code></div>-!|
+|check|compare;|!-[1,2,3,4,5,6,7,8,9,10,11,12]-!|!-[0,0,0,0,0,0,0,0,0,0,0,0]-!|!-<div><b>12 differences:</b><br>$[0]: expected <code>1</code> but was <code>0</code><br>$[1]: expected <code>2</code> but was <code>0</code><br>$[2]: expected <code>3</code> but was <code>0</code><br>$[3]: expected <code>4</code> but was <code>0</code><br>$[4]: expected <code>5</code> but was <code>0</code><br>$[5]: expected <code>6</code> but was <code>0</code><br>$[6]: expected <code>7</code> but was <code>0</code><br>$[7]: expected <code>8</code> but was <code>0</code><br>$[8]: expected <code>9</code> but was <code>0</code><br>$[9]: expected <code>10</code> but was <code>0</code><br>… and 2 more</div>-!|
+|note|the rows below show the HTML rendering in the extra cell|
+|show|compare;|!-{"total":11,"status":"OPEN","tags":["a"]}-!|!-{"total":10,"tags":["a","b"],"extra":true}-!|
+|show|compare;|!-[1,2,3,4,5,6,7,8,9,10,11,12]-!|!-[0,0,0,0,0,0,0,0,0,0,0,0]-!|
+|show|compare;|!-{"text":"0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789"}-!|!-{"text":"short"}-!|
+|show|compare;|{{{ {"html":"<b>&</b>"} }}}|{{{ {"html":"<i>'\"</i>"} }}}|

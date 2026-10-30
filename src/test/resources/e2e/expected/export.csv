@@ -1,0 +1,5 @@
+id;label;amount
+1;Widget;10
+2;"Gadget; large
+blue";${any-number}
+3;Gizmo;5.5

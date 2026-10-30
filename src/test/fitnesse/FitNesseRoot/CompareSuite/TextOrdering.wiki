@@ -1,0 +1,24 @@
+---
+Test
+---
+!3 Text: ordered and unordered
+By default line N is compared with line N. '''unordered''' matches each expected line against the first free actual line it fits; !-${ignore}-! lines are dropped in that mode. Text has no key: '''key''' is an error.
+
+|script|text comparison|
+|check not|compare;|{{{one
+two}}}|{{{two
+one}}}|OK|
+|unordered|
+|check|compare;|{{{one
+two}}}|{{{two
+one}}}|OK|
+|check|compare;|!-${any} B
+${any} A-!|{{{1 A
+2 B}}}|OK|
+|check|compare;|{{{one
+two}}}|{{{two
+three}}}|!-<div><b>2 differences:</b><br>expected line[1]: missing <code>&quot;one&quot;</code><br>line[2]: unexpected <code>&quot;three&quot;</code></div>-!|
+|ordered|
+|check not|compare;|{{{one
+two}}}|{{{two
+one}}}|OK|

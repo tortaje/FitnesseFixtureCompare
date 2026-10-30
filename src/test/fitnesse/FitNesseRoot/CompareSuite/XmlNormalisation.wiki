@@ -1,0 +1,15 @@
+---
+Test
+---
+!3 XML: what is equal and what is not
+Prefixes and namespaces are ignored (local names are compared, xmlns attributes dropped); attribute order does not matter; text is trimmed and whitespace between elements is ignored; entities are resolved. Element order matters, and text is compared literally: 42.5 is not 42.50.
+
+|script|xml comparison|
+|check|compare;|{{{<a><b>1</b></a>}}}|{{{<x:a xmlns:x="urn:x"><x:b>1</x:b></x:a>}}}|OK|
+|check|compare;|{{{<a p="1" q="2"/>}}}|{{{<a q="2" p="1"></a>}}}|OK|
+|check|compare;|{{{<a><b>  1 </b>
+<c/></a>}}}|{{{<a>   <b>1</b>   <c/>   </a>}}}|OK|
+|check|compare;|{{{<a q="x &amp; y"><b>1 &lt; 2</b></a>}}}|{{{<a q="x &amp; y"><b>1 &#x3C; 2</b></a>}}}|OK|
+|check|compare;|{{{<p>Hello <b>you</b> there</p>}}}|{{{<p>Hello<b>you</b>there</p>}}}|OK|
+|check|compare;|{{{<a><b/><c/></a>}}}|{{{<a><c/><b/></a>}}}|!-<div><b>2 differences:</b><br>/a/b: expected <code>element &lt;b&gt;</code> but was <code>element &lt;c&gt;</code><br>/a/c: expected <code>element &lt;c&gt;</code> but was <code>element &lt;b&gt;</code></div>-!|
+|check|compare;|{{{<a>42.5</a>}}}|{{{<a>42.50</a>}}}|!-<div><b>1 difference:</b><br>/a/text(): expected <code>42.5</code> but was <code>42.50</code></div>-!|

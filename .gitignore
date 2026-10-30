@@ -1,0 +1,10 @@
+target/
+.idea/
+*.iml
+.DS_Store
+dependency-reduced-pom.xml
+/.superpowers/
+src/test/fitnesse/FitNesseRoot/files/
+src/test/fitnesse/FitNesseRoot/ErrorLogs/
+src/test/fitnesse/FitNesseRoot/RerunLastFailures_*.wiki
+src/test/fitnesse/FitNesseRoot/RecentChanges.wiki
