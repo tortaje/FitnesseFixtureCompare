@@ -10,8 +10,8 @@ import java.util.regex.PatternSyntaxException;
  *
  * <p>The markers are compiled into one regular expression for the whole line, so capturing groups are numbered
  * across the line: in {@code ${regex:(z)}-${regex:(a)\1}} the {@code \1} refers to the group of the first marker.
- * A marker whose braces are not balanced (for instance {@code ${regex:\{}}) never closes, and the line is then
- * compared as literal text.
+ * A marker whose braces are not balanced (for instance <code>${regex:\&#123;}</code>) never closes, and the line is
+ * then compared as literal text.
  */
 public final class LinePattern {
 

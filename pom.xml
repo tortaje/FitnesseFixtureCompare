@@ -6,7 +6,7 @@
 
   <groupId>io.github.tortaje</groupId>
   <artifactId>fitnesse-compare</artifactId>
-  <version>1.1.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <packaging>jar</packaging>
   <name>fitnesse-compare</name>
   <description>Structural JSON / XML / JSON Lines / text / CSV comparison against expected files, with wildcards, for FitNesse Slim.</description>

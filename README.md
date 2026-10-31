@@ -34,14 +34,14 @@ flowchart TD
 <dependency>
   <groupId>io.github.tortaje</groupId>
   <artifactId>fitnesse-compare</artifactId>
-  <version>1.1.0</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 
 On a FitNesse page, put the jar on the class path. No other jar is needed:
 
 ```
-!path /path/to/fitnesse-compare-1.1.0.jar
+!path /path/to/fitnesse-compare-1.0.0.jar
 ```
 
 ## The fixtures

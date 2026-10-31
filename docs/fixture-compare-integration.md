@@ -13,7 +13,7 @@ transitive dependency.
 <dependency>
   <groupId>io.github.tortaje</groupId>
   <artifactId>fitnesse-compare</artifactId>
-  <version>1.1.0</version>
+  <version>1.0.0</version>
   <scope>provided</scope>
 </dependency>
 ```
